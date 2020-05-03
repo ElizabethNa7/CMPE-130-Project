@@ -1,3 +1,6 @@
+//the file I used to test was called "file.txt" and was a sentence/list of 5 words like "hi this is the test file"
+
+
 #include <string>
 #include <fstream>
 #include <iostream>
