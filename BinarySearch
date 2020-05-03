@@ -1,0 +1,103 @@
+#include <string>
+#include <fstream>
+#include <iostream>
+using namespace std;
+
+void sortArray(string [], int);
+int binarySearch(string [], int, string);
+//const int SIZE = 20;
+
+int main() {
+    string array[5];
+
+    ifstream file("file.txt");
+    if(file.is_open()){
+
+        for(int i = 0; i < 6; ++i){
+            file >> array[i];
+        }
+    }
+
+    string empName;
+    int results;
+
+    // Sort array first
+    sortArray(array, 6);
+
+    // Prompt for user input to enter an employee name
+    cout << "Please enter an employee's name: ";
+    getline(cin, empName);
+
+    // Search for name
+    results = binarySearch(array, 6, empName);
+
+    // If results contains -1 the name was not found.
+    if (results == -1)
+        cout << "That name does not exist in the array.\n";
+    else
+    {
+        // Otherwise results contains the subscript of
+        // the specified employee ID in the array.
+        cout << "That name is found at element " << results;
+        cout << " in the array.\n";
+    }
+
+
+    return 0;
+}
+
+//**************************************************************
+// Definition of function sortArray.                           *
+// This function performs an ascending order selection sort on *
+// array. size is the number of elements in the array.         *
+//**************************************************************
+void sortArray(string array[], int size){
+    int startScan;
+	int minIndex;
+    string minValue;
+
+    for (startScan = 0; startScan < (size - 1); startScan++){
+        minIndex = startScan;
+        minValue = array[startScan];
+        for(int index = startScan + 1; index < size; index++){
+            if (array[index] < minValue){
+                minValue = array[index];
+                minIndex = index;
+            }
+        }
+        array[minIndex] = array[startScan];
+        array[startScan] = minValue;
+    }
+    for(int i=0; i <6; i++){
+    	cout << array[i] << endl;
+    }
+}
+
+//***************************************************************
+// The binarySearch function performs a binary search on an     *
+// integer array. array, which has a maximum of size elements,  *
+// is searched for the number stored in value. If the number is *
+// found, its array subscript is returned. Otherwise, -1 is     *
+// returned indicating the value was not in the array.          *
+//***************************************************************
+int binarySearch(string array[], int size, string value){
+    int first = 0,             // First array element
+        last = size - 1,       // Last array element
+        middle,                // Mid point of search
+        position = -1;         // Position of search value
+    bool found = false;        // Flag
+
+    while (!found && first <= last) {
+        middle = (first + last) / 2;     // Calculate mid point
+        if (array[middle] == value)      // If value is found at mid
+        {
+            found = true;
+            position = middle;
+        }
+        else if (array[middle] > value)  // If value is in lower half
+            last = middle - 1;
+        else
+            first = middle + 1;           // If value is in upper half
+    }
+    return position;
+}
