@@ -1,0 +1,102 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+
+using namespace std;
+
+// Function prototype
+void sortArray(string [], int);
+int binarySearch(string [], int, string);
+
+int main() {
+    string name[6];
+    	    string minValue;
+
+    ifstream file("file.txt");
+    if(file.is_open()){
+
+        for(int i = 0; i < 6; ++i){
+            file >> name[i];
+        }
+    }
+
+    // Variables
+    string empName;
+    int results;
+
+    // Sort array first
+    sortArray(name, 6);
+
+    // Prompt for user input to enter an employee name
+    cout << "Please enter an employee's name: ";
+    getline(cin, empName);
+
+    // Search for name
+    results = binarySearch(name, 6, empName);
+
+    // If results contains -1 the name was not found.
+    if (results == -1)
+        cout << "That name does not exist in the array.\n";
+    else
+    {
+        // Otherwise results contains the subscript of
+        // the specified employee ID in the array.
+        cout << "That name is found at element " << results;
+        cout << " in the array.\n";
+    }
+
+    return 0;
+}
+
+
+
+
+void sortArray(string name[], int size)
+{
+    int startScan, minIndex;
+    string minValue;
+
+    for (startScan = 0; startScan < (size - 1); startScan++)
+    {
+        minIndex = startScan;
+        minValue = name[startScan];
+        for(int index = startScan + 1; index < size; index++)
+        {
+            if (name[index] < minValue)
+            {
+                minValue = name[index];
+                minIndex = index;
+            }
+        }
+        name[minIndex] = name[startScan];
+        name[startScan] = minValue;
+    }
+    for(int i=0; i <6; i++){
+    	cout << name[i] << endl;
+    }
+}
+
+
+
+int binarySearch(string name[], int size, string value) {
+    int first = 0,
+        last = size - 1,
+        middle,
+        position = -1;
+    bool found = false;        //Flag
+
+    while (!found && first <= last)
+    {
+        middle = (first + last) / 2;
+        if (name[middle] == value)      //If value is found at mid
+        {
+            found = true;
+            position = middle;
+        }
+        else if (name[middle] > value)  //If value is in lower half
+            last = middle - 1;
+        else
+            first = middle + 1;           //If value is in upper half
+    }
+    return position;
+}
